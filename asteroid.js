@@ -3,6 +3,11 @@ class Asteroids {
     this.pos = createVector(x, y);
     this.r = r;
     this.type = type;
+    this.total = floor(random(5, 15));
+    this.offset = [];
+    for (let i = 0; i < this.total; i++) {
+      this.offset[i] = random(-35, 35);
+    }
   }
 
   draw() {
@@ -10,7 +15,18 @@ class Asteroids {
     if (this.type === "aster") {
       fill(0);
       stroke(255);
-      ellipse(this.pos.x, this.pos.y, this.r, this.r);
+      //ellipse(this.pos.x, this.pos.y, this.r, this.r);
+      translate(this.pos.x, this.pos.y);
+      beginShape();
+      for (let i = 0; i < this.total; i++) {
+        let angle = map(i, 0, this.total, 0, TWO_PI);
+        let r = this.r + this.offset[i];
+        let x = r * cos(angle);
+        let y = r * sin(angle);
+        vertex(x, y);
+      }
+      endShape(CLOSE);
+
       this.pos.x += 6;
       pop();
     }

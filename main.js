@@ -1,7 +1,6 @@
 let player;
 let coins = [];
-let zoom = 1;
-// let score;
+let zoom = 0.01;
 
 let bg2;
 
@@ -17,33 +16,33 @@ let obsMakeMBigger = [];
 let obsFreeze3sec = [];
 let mode;
 
-//let bgMusic;
+// let bgsong;
 
 function preload() {
-  //bgMusic = loadSound("amb.mp3");
+  // bgsong = loadSound("./assets/bg.mp3");
 }
 
 function setup() {
   mode = 0;
   createCanvas(windowWidth, windowHeight);
-  //bgMusic.play();
+  // bgsong.play();
 
   bg2 = new BgBlack();
-  player = new Player(0, 0, 30);
+  player = new Player(0, 0, 40);
 
-  for (let i = 0; i < 330; i++) {
+  for (let i = 0; i < 200; i++) {
     let randomX = random(-MAP_WIDTH, 0);
     var randomY = random(70, MAP_HEIGHT - 70);
-    asteroids[i] = new Asteroids(randomX, randomY, random(70, 370), "aster");
+    asteroids[i] = new Asteroids(randomX, randomY, random(30, 180), "aster");
   }
 
   for (let i = 0; i < 600; i++) {
     let randomX = random(0, MAP_WIDTH);
     var randomY = random(0, MAP_HEIGHT);
-    stars[i] = new Asteroids(randomX, randomY, random(4, 6), "star");
+    stars[i] = new Asteroids(randomX, randomY, random(3, 5), "star");
   }
 
-  for (let i = 0; i < 1700; i++) {
+  for (let i = 0; i < 2000; i++) {
     let randomX = random(0, MAP_WIDTH);
     var randomY = random(0, MAP_HEIGHT);
     starsStatS[i] = new Asteroids(
@@ -60,35 +59,35 @@ function setup() {
     starsStatM[i] = new Asteroids(
       randomX,
       randomY,
-      random(3, 4),
+      random(2, 3),
       "star-static-mid"
     );
   }
 
   //all points on the map
-  for (let i = 0; i < 450; i++) {
+  for (let i = 0; i < 200; i++) {
     let randomX = random(0, MAP_WIDTH);
     var randomY = random(0, MAP_HEIGHT);
-    coins[i] = new Points(randomX, randomY, 12);
+    coins[i] = new Points(randomX, randomY, 13);
   }
 
   //all obstacles on the map
-  for (let i = 0; i < 170; i++) {
+  for (let i = 0; i < 150; i++) {
     let randomX = random(0, MAP_WIDTH);
     var randomY = random(0, MAP_HEIGHT);
-    obsMakeSmaller[i] = new Obstacle(randomX, randomY, 10, "makeSmaller");
-  }
-
-  for (let i = 0; i < 131; i++) {
-    let randomX = random(0, MAP_WIDTH);
-    var randomY = random(0, MAP_HEIGHT);
-    obsMakeBigger[i] = new Obstacle(randomX, randomY, 15, "makeBigger");
+    obsMakeSmaller[i] = new Obstacle(randomX, randomY, 8, "makeSmaller");
   }
 
   for (let i = 0; i < 100; i++) {
     let randomX = random(0, MAP_WIDTH);
     var randomY = random(0, MAP_HEIGHT);
-    obsMakeMBigger[i] = new Obstacle(randomX, randomY, 20, "makeMBigger");
+    obsMakeBigger[i] = new Obstacle(randomX, randomY, 10, "makeBigger");
+  }
+
+  for (let i = 0; i < 50; i++) {
+    let randomX = random(0, MAP_WIDTH);
+    var randomY = random(0, MAP_HEIGHT);
+    obsMakeMBigger[i] = new Obstacle(randomX, randomY, 12, "makeMBigger");
   }
 }
 
@@ -115,22 +114,40 @@ function draw() {
     }
     pop();
 
-    for (let i = 0; i < 450; i++) {
-      let randomX = random(0, MAP_WIDTH);
-      var randomY = random(0, MAP_HEIGHT);
-      coins[i] = new Points(randomX, randomY, 12);
-    }
+    fill("red");
+    text("Press ENTER to start", width / 2 - 130, height / 2 - 30);
+    textSize(15);
 
     fill("red");
-    text("Press enter to start", width / 2 - 250, height / 2);
-    textSize(58);
+    text(
+      "✓ your goal is to collect as many green stars as possible",
+      width / 2 - 218,
+      height / 2
+    );
+    textSize(15);
+
+    fill("red");
+    text(
+      "✕ avoid touching asteroids and borders of the map - red stars change the size of your vehicle.",
+      width / 2 - 328,
+      height / 2 + 20
+    );
+    textSize(11);
+
+    fill("red");
+    text(
+      "press SPACE to slow down - RIGHT CLICK on mouse to accelerate",
+      width / 2 - 190,
+      height / 2 + 50
+    );
+    textSize(23);
   }
   if (mode == 1) {
     background("black");
     //centers the player in the middle of the window (viewport)
     translate(width / 2, height / 2);
 
-    // zooms in the wors around instead of the player itself
+    // zooms in the wors around instead of the player itself when you eat circles
     let newzoom = 30 / player.r;
     zoom = lerp(zoom, newzoom, 0.1);
     scale(zoom);
@@ -197,19 +214,16 @@ function draw() {
     push();
     for (let i = asteroids.length - 1; i >= 0; i--) {
       asteroids[i].draw();
-      // if (player.collisionCheck(asteroids[i])) {
-      //   asteroids.splice(i, 1);
-      // }
+      if (player.collisionCheck(asteroids[i])) {
+        asteroids.splice(i, 1);
+        mode = 2;
+      }
     }
     pop();
 
     push();
     bg2.draw();
     pop();
-
-    // push();
-    // score.draw();
-    // pop();
 
     // player draw
     push();
@@ -218,15 +232,15 @@ function draw() {
     pop();
 
     //boost for speed when mouse clicked
-    // if (mouseIsPressed) {
-    //   if (mouseButton === LEFT) {
-    //     player.boost();
-    //   }
-    // }
+    if (mouseIsPressed) {
+      if (mouseButton === LEFT) {
+        player.boost();
+      }
+    }
 
     push();
     let newScore = document.getElementById("score");
-    newScore.textContent = `Score:${player.score}`;
+    newScore.textContent = `Score: ${player.score}`;
     pop();
   }
 
@@ -234,13 +248,24 @@ function draw() {
   if (mode == 2) {
     push();
     noLoop();
-    background(10);
+    background(0);
     pop();
 
     loop();
-    fill("white");
-    text(`your score: ${player.score}`, width / 2 - 250, height / 2);
-    textSize(58);
+
+    push();
+    for (let i = asteroids.length - 1; i >= 0; i--) {
+      asteroids[i].draw();
+    }
+    pop();
+
+    fill("red");
+    text(`YOUR SCORE: ${player.score}`, width / 2 - 195, height / 2);
+    textSize(17);
+
+    fill("red");
+    text("Press ENTER to start again.", width / 2 - 120, height / 2 + 30);
+    textSize(45);
 
     push();
     let newScore = document.getElementById("score");
@@ -257,5 +282,8 @@ function windowResized() {
 function keyPressed() {
   if (keyCode === ENTER) {
     mode = 1;
+  }
+  if (keyCode === 32) {
+    player.slowDown();
   }
 }

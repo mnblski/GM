@@ -4,13 +4,10 @@ class Player {
     this.r = r;
 
     // previous setting for below 500, 500
-    this.vel = createVector(500, 500);
-
-    this.mag = 5;
+    this.vel = createVector(55, 55);
+    this.mag = 7;
     this.velLerp = 0.1;
-
     this.score = 0;
-    this.boostCount = 0;
 
     // this.boostPoints = 4200;
   }
@@ -33,22 +30,18 @@ class Player {
       this.vel.lerp(mouse, this.velLerp);
       this.pos.add(this.vel);
     } else {
-      //this.pos.add(10.1, 11);
-      this.pos.sub(this.vel);
-      // add game over here if you touch boundaries
+      mode = 2;
     }
   }
 
   //adjust mag for speed and velLerp for sensitivity - add only if certain score??
-  // boost() {
-  //   if (this.boostCount === 3) {
-  //     this.boostCount -= 2;
-  //     this.mag -= 0.5;
-  //   } else {
-  //     this.mag += 0.5;
-  //     this.boostCount += 1;
-  //   }
-  // }
+  boost() {
+    this.mag += 0.7;
+  }
+
+  slowDown() {
+    this.mag -= 1;
+  }
 
   // player grows when eats coins - uncomment and change to adjust
   //bigger you get - slower your moves are - adjust lerp in update()
@@ -62,14 +55,14 @@ class Player {
     }
   }
 
-  updateScore(score) {
-    document.getElementById("score");
-  }
-
   collisionCheck(obstacle) {
     let d = p5.Vector.dist(this.pos, obstacle.pos);
 
-    if (d < this.r + obstacle.r && obstacle.type === "makeSmaller") {
+    if (
+      d < this.r + obstacle.r &&
+      obstacle.type === "makeSmaller" &&
+      this.r > 5
+    ) {
       // let sum = PI * this.r * this.r + PI * obstacle.r * obstacle.r;
       this.r /= 1.1;
       return true;
@@ -80,12 +73,12 @@ class Player {
     }
     if (d < this.r + obstacle.r && obstacle.type === "makeBigger") {
       let sum = PI * this.r * this.r + PI * obstacle.r * obstacle.r;
-      this.r = sqrt(sum / PI);
+      this.r *= 1.1;
       return true;
     }
     if (d < this.r + obstacle.r && obstacle.type === "makeMBigger") {
       let sum = PI * this.r * this.r + PI * obstacle.r * obstacle.r;
-      this.r = sqrt(sum / PI);
+      this.r *= 1.2;
       return true;
     }
   }
@@ -95,11 +88,5 @@ class Player {
     strokeWeight(1);
     fill(0);
     ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2);
-
-    // push();
-    // textSize(102);
-    // text(`${this.score}`, this.pos.x, this.pos.y, "fixed");
-    // fill("white");
-    // pop();
   }
 }

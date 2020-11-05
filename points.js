@@ -7,7 +7,7 @@ class Points {
   draw() {
     fill("rgb(30,255,30)");
     ellipse(this.pos.x, this.pos.y, this.r, this.r);
-    this.pos.x -= 1;
+    this.pos.x -= 2;
 
     if (this.pos.x - this.r <= 0) {
       this.pos.x = MAP_WIDTH;

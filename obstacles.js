@@ -7,7 +7,7 @@ class Obstacle {
 
   draw() {
     if (this.type === "makeSmaller") {
-      fill("red");
+      fill("lightblue");
       ellipse(this.pos.x, this.pos.y, this.r, this.r);
       this.pos.x += 1; //1.5
     }
