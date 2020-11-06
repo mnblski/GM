@@ -1,6 +1,7 @@
 class BgBlack {
   constructor() {}
 
+  //main background, frame, and rectangles that cover moving objects
   draw() {
     fill(0);
     noStroke();

@@ -246,13 +246,12 @@ function draw() {
 
   //game over - retry
   if (mode == 2) {
-    push();
+    // push();
     noLoop();
     background(0);
-    pop();
+    // pop();
 
     loop();
-
     push();
     for (let i = asteroids.length - 1; i >= 0; i--) {
       asteroids[i].draw();
@@ -281,6 +280,9 @@ function windowResized() {
 
 function keyPressed() {
   if (keyCode === ENTER) {
+    mode = 1;
+  }
+  if (keyCode === 16 && mode === 2) {
     mode = 1;
   }
   if (keyCode === 32) {

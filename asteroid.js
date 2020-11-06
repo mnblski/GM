@@ -3,6 +3,8 @@ class Asteroids {
     this.pos = createVector(x, y);
     this.r = r;
     this.type = type;
+
+    //below code related to the shape of asteroids
     this.total = floor(random(5, 15));
     this.offset = [];
     for (let i = 0; i < this.total; i++) {

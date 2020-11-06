@@ -12,7 +12,7 @@ class Player {
     // this.boostPoints = 4200;
   }
 
-  // player is following the coursor, adjust 0,05 for delay
+  // player is following the coursor, lerp adds delay, vel and mag relates to the change of the position
   update() {
     let mouse = createVector(mouseX - width / 2, mouseY - height / 2);
     mouse.setMag(this.mag);
@@ -34,11 +34,12 @@ class Player {
     }
   }
 
-  //adjust mag for speed and velLerp for sensitivity - add only if certain score??
+  // accelerates the vehicle
   boost() {
     this.mag += 0.7;
   }
 
+  // slows the vehicle down
   slowDown() {
     this.mag -= 1;
   }
