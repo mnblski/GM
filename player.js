@@ -79,7 +79,7 @@ class Player {
     }
     if (d < this.r + obstacle.r && obstacle.type === "makeMBigger") {
       let sum = PI * this.r * this.r + PI * obstacle.r * obstacle.r;
-      this.r *= 1.2;
+      this.r *= 1.15;
       return true;
     }
   }

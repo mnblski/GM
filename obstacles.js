@@ -9,7 +9,7 @@ class Obstacle {
     if (this.type === "makeSmaller") {
       fill("lightblue");
       ellipse(this.pos.x, this.pos.y, this.r, this.r);
-      this.pos.x += 1; //1.5
+      this.pos.x += 2; //1.5
     }
     if (this.type === "makeBigger") {
       fill("red");
